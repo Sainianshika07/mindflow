@@ -1,7 +1,6 @@
 const app = require('../backend/app');
 const connectDB = require('../backend/config/db');
 
-// Connect to MongoDB
 let isConnected = false;
 
 const connectToDatabase = async () => {
@@ -12,5 +11,11 @@ const connectToDatabase = async () => {
 
 module.exports = async (req, res) => {
   await connectToDatabase();
+  
+  // Strip /api prefix for the app
+  if (req.url.startsWith('/api')) {
+    req.url = req.url.replace('/api', '');
+  }
+  
   return app(req, res);
 };
